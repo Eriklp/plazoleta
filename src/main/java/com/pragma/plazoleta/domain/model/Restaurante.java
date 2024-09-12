@@ -1,9 +1,9 @@
 package com.pragma.plazoleta.domain.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import java.util.Set;
 
 @Entity
@@ -11,24 +11,85 @@ public class Restaurante {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Getter
-    @Setter
     private Long id;
 
-    @Getter
-    @Setter
+    @NotBlank
+    @Size(max = 100)
+    @Pattern(regexp = "^(?!\\d+$).*$", message = "El nombre del restaurante no puede contener solo números.")
     private String nombre;
 
-    @Getter
-    @Setter
+    @NotBlank
+    @Pattern(regexp = "\\d+", message = "El NIT debe ser numérico.")
+    private String nit;
+
+    @NotBlank
     private String direccion;
 
-    @Getter
-    @Setter
-    @OneToMany(mappedBy = "restaurante", cascade = CascadeType.ALL)
+    @NotBlank
+    @Size(max = 13)
+    @Pattern(regexp = "^\\+?\\d+$", message = "El teléfono debe ser numérico y puede contener el símbolo '+'.")
+    private String telefono;
+
+    private Long propietarioId;
+
+    @OneToMany(mappedBy = "restaurante", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Plato> platos;
 
-    public void setPropietarioId(Long propietarioId) {
+    // Getters y Setters
+
+    public Long getId() {
+        return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getNit() {
+        return nit;
+    }
+
+    public void setNit(String nit) {
+        this.nit = nit;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public Long getPropietarioId() {
+        return propietarioId;
+    }
+
+    public void setPropietarioId(Long propietarioId) {
+        this.propietarioId = propietarioId;
+    }
+
+    public Set<Plato> getPlatos() {
+        return platos;
+    }
+
+    public void setPlatos(Set<Plato> platos) {
+        this.platos = platos;
+    }
 }

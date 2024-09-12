@@ -6,11 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
-import java.util.List;
 import java.util.Optional;
+import java.util.List;
 
 @RestController
-@RequestMapping("/api/restaurantes")
+@RequestMapping("/restaurantes")
 public class RestauranteController {
 
     private final RestauranteService restauranteService;

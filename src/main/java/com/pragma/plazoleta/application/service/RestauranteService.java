@@ -5,15 +5,12 @@ import com.pragma.plazoleta.domain.repository.RestauranteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.validation.annotation.Validated;
-
 import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@Validated
 public class RestauranteService {
 
     @Autowired
@@ -22,7 +19,7 @@ public class RestauranteService {
     @Autowired
     private RestTemplate restTemplate;
 
-    private final String USUARIOS_SERVICE_URL = "http://localhost:8081/api/usuarios/{id}";
+    private final String USUARIOS_SERVICE_URL = "http://usuarios:8080/{id}";
 
     public Restaurante crearRestaurante(@Valid Restaurante restaurante, Long propietarioId) {
         // Llamar al microservicio de usuarios para validar el rol del usuario
@@ -32,7 +29,6 @@ public class RestauranteService {
             throw new IllegalArgumentException("El usuario con ID " + propietarioId + " no es un propietario válido.");
         }
 
-        // Asignar el propietario al restaurante
         restaurante.setPropietarioId(propietarioId);
 
         // Guardar el restaurante

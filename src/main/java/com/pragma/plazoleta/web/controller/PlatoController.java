@@ -5,10 +5,11 @@ import com.pragma.plazoleta.domain.model.Plato;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/platos")
+@RequestMapping("/platos")
 public class PlatoController {
 
     private final PlatoService platoService;
@@ -18,8 +19,10 @@ public class PlatoController {
     }
 
     @PostMapping
-    public ResponseEntity<Plato> crearPlato(@RequestBody Plato plato) {
-        Plato nuevoPlato = platoService.crearPlato(plato);
+    public ResponseEntity<Plato> crearPlato(@Valid @RequestBody Plato plato,
+                                            @RequestParam Long restauranteId,
+                                            @RequestParam Long propietarioId) {
+        Plato nuevoPlato = platoService.crearPlato(plato, restauranteId, propietarioId);
         return ResponseEntity.ok(nuevoPlato);
     }
 
@@ -27,11 +30,5 @@ public class PlatoController {
     public ResponseEntity<List<Plato>> obtenerPlatosPorRestaurante(@PathVariable Long restauranteId) {
         List<Plato> platos = platoService.obtenerPlatosPorRestaurante(restauranteId);
         return ResponseEntity.ok(platos);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarPlato(@PathVariable Long id) {
-        platoService.eliminarPlato(id);
-        return ResponseEntity.noContent().build();
     }
 }

@@ -38,7 +38,7 @@ public class RestauranteControllerTest {
 
         when(restauranteService.crearRestaurante(any(Restaurante.class), eq(1L))).thenReturn(restaurante);
 
-        mockMvc.perform(post("/api/restaurantes")
+        mockMvc.perform(post("/restaurantes")
                         .param("propietarioId", "1")  // Pasar el propietarioId como parámetro en la URL
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"nombre\":\"Restaurante A\",\"direccion\":\"Dirección A\",\"nit\":\"12345678\",\"telefono\":\"+573005698325\",\"urlLogo\":\"https://logo.com/logo.png\"}"))
