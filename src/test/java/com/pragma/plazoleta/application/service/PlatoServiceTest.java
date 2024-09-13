@@ -1,5 +1,6 @@
 package com.pragma.plazoleta.application.service;
 
+import com.pragma.plazoleta.application.dto.UsuarioDTO;
 import com.pragma.plazoleta.domain.model.Plato;
 import com.pragma.plazoleta.domain.model.Restaurante;
 import com.pragma.plazoleta.domain.repository.PlatoRepository;
@@ -63,6 +64,35 @@ public class PlatoServiceTest {
         verify(platoRepository, times(1)).save(plato);
     }
 
+    @Test
+    void testModificarPlato() {
+        Long platoId = 1L;
+        Long propietarioId = 1L;
+        Plato plato = new Plato();
+        plato.setId(platoId);
+        plato.setDescripcion("Descripción antigua");
+        plato.setPrecio(10000);
+        Restaurante restaurante = new Restaurante();
+        restaurante.setId(1L);
+        restaurante.setPropietarioId(propietarioId);
+        plato.setRestaurante(restaurante);
 
+        // Simular que el plato existe en el repositorio
+        when(platoRepository.findById(platoId)).thenReturn(Optional.of(plato));
+
+        // Simular que el plato se guarda en el repositorio y devuelve el plato modificado
+        when(platoRepository.save(any(Plato.class))).thenReturn(plato);
+
+        // Ejecutar el método de modificación
+        Plato platoModificado = platoService.modificarPlato(platoId, propietarioId, "Nueva descripción", 12000);
+
+        // Verificar que los cambios se aplicaron correctamente
+        assertNotNull(platoModificado);  // Asegurarse de que el plato no es null
+        assertEquals("Nueva descripción", platoModificado.getDescripcion());
+        assertEquals(12000, platoModificado.getPrecio());
+
+        // Verificar que el método save() fue llamado
+        verify(platoRepository).save(plato);
+    }
 
 }

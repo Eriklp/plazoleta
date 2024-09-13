@@ -1,4 +1,4 @@
-package com.pragma.plazoleta.application.service;
+package com.pragma.plazoleta.application.dto;
 
 public class UsuarioDTO {
 

@@ -1,5 +1,6 @@
 package com.pragma.plazoleta.application.service;
 
+import com.pragma.plazoleta.application.dto.UsuarioDTO;
 import com.pragma.plazoleta.domain.model.Restaurante;
 import com.pragma.plazoleta.domain.repository.RestauranteRepository;
 import org.junit.jupiter.api.BeforeEach;

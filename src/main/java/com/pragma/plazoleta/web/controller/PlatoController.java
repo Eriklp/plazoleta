@@ -1,5 +1,6 @@
 package com.pragma.plazoleta.web.controller;
 
+import com.pragma.plazoleta.application.dto.PlatoDTO;
 import com.pragma.plazoleta.application.service.PlatoService;
 import com.pragma.plazoleta.domain.model.Plato;
 import org.springframework.http.ResponseEntity;
@@ -30,5 +31,15 @@ public class PlatoController {
     public ResponseEntity<List<Plato>> obtenerPlatosPorRestaurante(@PathVariable Long restauranteId) {
         List<Plato> platos = platoService.obtenerPlatosPorRestaurante(restauranteId);
         return ResponseEntity.ok(platos);
+    }
+
+    @PutMapping("/{platoId}")
+    public ResponseEntity<Plato> modificarPlato(
+            @PathVariable Long platoId,
+            @RequestParam Long propietarioId,  // El ID del propietario (podría venir del JWT en caso de autenticación)
+            @RequestBody PlatoDTO platoDTO) {
+
+        Plato platoModificado = platoService.modificarPlato(platoId, propietarioId, platoDTO.getDescripcion(), platoDTO.getPrecio());
+        return ResponseEntity.ok(platoModificado);
     }
 }

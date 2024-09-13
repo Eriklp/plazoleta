@@ -1,5 +1,6 @@
 package com.pragma.plazoleta.application.service;
 
+import com.pragma.plazoleta.application.dto.UsuarioDTO;
 import com.pragma.plazoleta.domain.model.Plato;
 import com.pragma.plazoleta.domain.model.Restaurante;
 import com.pragma.plazoleta.domain.repository.PlatoRepository;
@@ -52,4 +53,21 @@ public class PlatoService {
     public List<Plato> obtenerPlatosPorRestaurante(Long restauranteId) {
         return platoRepository.findByRestauranteId(restauranteId);
     }
+    public Plato modificarPlato(Long platoId, Long propietarioId, String nuevaDescripcion, Integer nuevoPrecio) {
+        Plato plato = platoRepository.findById(platoId)
+                .orElseThrow(() -> new IllegalArgumentException("El plato no existe"));
+
+        // Verificar que el propietario sea el dueño del restaurante al que pertenece el plato
+        Restaurante restaurante = plato.getRestaurante();
+        if (!restaurante.getPropietarioId().equals(propietarioId)) {
+            throw new IllegalStateException("No tiene permisos para modificar este plato");
+        }
+
+        // Actualizar solo los campos permitidos
+        plato.setDescripcion(nuevaDescripcion);
+        plato.setPrecio(nuevoPrecio);
+
+        return platoRepository.save(plato);  // Guardar los cambios y retornar el plato guardado
+    }
+
 }
