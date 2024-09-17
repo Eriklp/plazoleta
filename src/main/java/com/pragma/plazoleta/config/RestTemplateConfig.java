@@ -1,4 +1,4 @@
-package com.pragma.plazoleta.configuration;
+package com.pragma.plazoleta.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

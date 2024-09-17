@@ -30,6 +30,9 @@ public class Restaurante {
     @Pattern(regexp = "^\\+?\\d+$", message = "El teléfono debe ser numérico y puede contener el símbolo '+'.")
     private String telefono;
 
+    @NotBlank
+    private String urlLogo;  // Añadido según los requerimientos
+
     private Long propietarioId;
 
     @OneToMany(mappedBy = "restaurante", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -75,6 +78,14 @@ public class Restaurante {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }
+
+    public String getUrlLogo() {
+        return urlLogo;
+    }
+
+    public void setUrlLogo(String urlLogo) {
+        this.urlLogo = urlLogo;
     }
 
     public Long getPropietarioId() {

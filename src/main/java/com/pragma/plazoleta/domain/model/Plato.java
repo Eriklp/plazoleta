@@ -1,8 +1,7 @@
 package com.pragma.plazoleta.domain.model;
 
+import com.pragma.plazoleta.application.dto.PlatoDTO;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,32 +16,27 @@ public class Plato {
 
     @Getter
     @Setter
-    @NotBlank
     private String nombre;
 
     @Getter
     @Setter
-    @Positive(message = "El precio debe ser un número entero positivo mayor que 0")
     private Integer precio;
 
     @Getter
     @Setter
-    @NotBlank
     private String descripcion;
 
     @Getter
     @Setter
-    @NotBlank
     private String urlImagen;
 
     @Getter
     @Setter
-    @NotBlank
     private String categoria;
 
     @Getter
     @Setter
-    private boolean activo = true;
+    private boolean activo;
 
     @Getter
     @Setter
@@ -50,4 +44,16 @@ public class Plato {
     @JoinColumn(name = "restaurante_id", nullable = false)
     private Restaurante restaurante;
 
+    // Constructor para aceptar un PlatoDTO
+    public Plato(PlatoDTO platoDTO) {
+        this.nombre = platoDTO.getNombre();
+        this.precio = platoDTO.getPrecio();
+        this.descripcion = platoDTO.getDescripcion();
+        this.urlImagen = platoDTO.getUrlImagen();
+        this.categoria = platoDTO.getCategoria();
+    }
+
+    // Constructor vacío por defecto (necesario para JPA y los tests)
+    public Plato() {
+    }
 }

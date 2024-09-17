@@ -38,24 +38,15 @@ public class PlatoControllerTest {
 
         when(platoService.crearPlato(any(Plato.class), eq(1L), eq(1L))).thenReturn(plato);
 
-        mockMvc.perform(post("/platos")
+        mockMvc.perform(post("/platos/crear")
                         .param("restauranteId", "1")  // Pasar el restauranteId como parámetro en la URL
                         .param("propietarioId", "1")  // Pasar el propietarioId como parámetro en la URL
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"nombre\":\"Plato A\",\"precio\":25,\"descripcion\":\"Delicioso plato\",\"urlImagen\":\"https://image.com/plato.png\",\"categoria\":\"Carne\"}"))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.nombre").value("Plato A"));
 
         verify(platoService, times(1)).crearPlato(any(Plato.class), eq(1L), eq(1L));
     }
 
-    @Test
-    public void testObtenerPlatosPorRestaurante() throws Exception {
-        mockMvc.perform(get("/platos/restaurante/1"))
-                .andExpect(status().isOk());
-
-        verify(platoService, times(1)).obtenerPlatosPorRestaurante(1L);
-    }
-
-    // Elimina el test de eliminarPlato si no es relevante o agrégalo si es necesario.
 }

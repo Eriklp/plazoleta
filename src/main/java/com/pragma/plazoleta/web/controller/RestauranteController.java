@@ -1,45 +1,28 @@
+// com.pragma.plazoleta.web.controller.RestauranteController.java
 package com.pragma.plazoleta.web.controller;
 
 import com.pragma.plazoleta.application.service.RestauranteService;
 import com.pragma.plazoleta.domain.model.Restaurante;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import jakarta.validation.Valid;
-import java.util.Optional;
-import java.util.List;
 
 @RestController
 @RequestMapping("/restaurantes")
 public class RestauranteController {
 
-    private final RestauranteService restauranteService;
+    @Autowired
+    private RestauranteService restauranteService;
 
-    public RestauranteController(RestauranteService restauranteService) {
-        this.restauranteService = restauranteService;
+    @PostMapping("/crear")
+    public ResponseEntity<Restaurante> crearRestaurante(@RequestBody Restaurante restaurante, @RequestParam Long idUsuario) {
+        Restaurante nuevoRestaurante = restauranteService.crearRestaurante(restaurante, idUsuario);
+        return new ResponseEntity<>(nuevoRestaurante, HttpStatus.CREATED);
     }
 
-    @PostMapping
-    public ResponseEntity<Restaurante> crearRestaurante(@Valid @RequestBody Restaurante restaurante,
-                                                        @RequestParam Long propietarioId) {
-        Restaurante nuevoRestaurante = restauranteService.crearRestaurante(restaurante, propietarioId);
-        return ResponseEntity.ok(nuevoRestaurante);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Restaurante> obtenerRestaurantePorId(@PathVariable Long id) {
-        Optional<Restaurante> restaurante = restauranteService.obtenerRestaurantePorId(id);
-        return restaurante.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    @GetMapping
-    public ResponseEntity<List<Restaurante>> listarRestaurantes() {
-        return ResponseEntity.ok(restauranteService.listarRestaurantes());
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarRestaurante(@PathVariable Long id) {
-        restauranteService.eliminarRestaurante(id);
-        return ResponseEntity.noContent().build();
+    @GetMapping("/usuario/{id}")
+    public ResponseEntity<?> obtenerUsuario(@PathVariable Long id) {
+        return ResponseEntity.ok(restauranteService.obtenerUsuarioPorId(id));
     }
 }
